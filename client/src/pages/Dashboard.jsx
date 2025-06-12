@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { AppContext } from "../context/AppContext";
 
 const Dashboard = () => {
+  const { navigate } = useContext(AppContext);
   const [showModal, setShowModal] = useState(false);
 
   const metrics = [
@@ -10,6 +13,13 @@ const Dashboard = () => {
     { title: "Assigned Assets", value: "300" },
     { title: "Expended Assets", value: "100" },
   ];
+
+  useEffect(() => {
+    const token = Cookies.get("baseToken");
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <div className="p-6 space-y-8">

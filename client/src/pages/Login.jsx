@@ -1,23 +1,37 @@
-import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 import { AppContext } from "../context/AppContext";
 
 const Login = () => {
-  const { setUser } = useContext(AppContext);
+  const { setUser, navigate, backendUrl } = useContext(AppContext);
   const [form, setForm] = useState({ email: "", password: "" });
-  const navigate = useNavigate();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.email && form.password) {
-      localStorage.setItem("user", JSON.stringify(form));
-      setUser(true);
+    axios.defaults.withCredentials = true;
+
+    const { data } = await axios.post(backendUrl + "/api/v1/users/login", form);
+    console.log(data.data.accessToken);
+    if (data.success) {
+      toast.success(data.message);
+      Cookies.set("baseToken", data.data.accessToken, { expires: 1 });
       navigate("/");
+      setUser(true);
     }
   };
+
+  useEffect(() => {
+    const token = Cookies.get("baseToken");
+    if (token) {
+      navigate("/");
+    }
+  },[]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

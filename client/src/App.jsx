@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
@@ -10,14 +10,16 @@ import AdminPanel from "./pages/AdminPanel";
 import Expenditures from "./pages/Expenditure";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [user, setUser] = useState({ role: "admin" }); // Example: could be "logistics" or "commander"
 
   return (
-    <Router>
+    <div>
       <Navbar user={user} />
       <main className="p-6">
+        <ToastContainer />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -34,7 +36,7 @@ function App() {
           />
         </Routes>
       </main>
-    </Router>
+    </div>
   );
 }
 
