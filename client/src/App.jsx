@@ -8,6 +8,8 @@ import Transfers from "./pages/Transfers";
 import Assignments from "./pages/Assignments";
 import AdminPanel from "./pages/AdminPanel";
 import Expenditures from "./pages/Expenditure";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 function App() {
   const [user, setUser] = useState({ role: "admin" }); // Example: could be "logistics" or "commander"
@@ -17,6 +19,8 @@ function App() {
       <Navbar user={user} />
       <main className="p-6">
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/purchases" element={<Purchases />} />
           <Route path="/transfers" element={<Transfers />} />
