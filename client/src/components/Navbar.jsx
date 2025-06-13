@@ -5,12 +5,12 @@ import { Menu, X } from "lucide-react"; // Lucide icons (optional for hamburger)
 import { AppContext } from "../context/AppContext";
 
 const Navbar = ({ onLogout }) => {
-  const { user, setUser } = useContext(AppContext);
+  const { loggedIn, setLoggedIn, user } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    setUser(false);
+    setLoggedIn(false);
     navigate("/login");
   };
 
@@ -58,7 +58,7 @@ const Navbar = ({ onLogout }) => {
               </Link>
             </li>
           )}
-          {!user ? (
+          {!loggedIn ? (
             <>
               <li>
                 <Link

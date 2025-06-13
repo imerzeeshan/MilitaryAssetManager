@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { useEffect } from "react";
 
 const Transfers = () => {
+  const { navigate, token } = useContext(AppContext);
+
   const [form, setForm] = useState({
     assetType: "",
     assetIdOrQty: "",
@@ -39,6 +44,11 @@ const Transfers = () => {
       notes: "",
     });
   };
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <div className="p-6">

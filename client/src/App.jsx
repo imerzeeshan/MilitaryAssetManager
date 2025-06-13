@@ -11,10 +11,11 @@ import Expenditures from "./pages/Expenditure";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
+import { useContext } from "react";
+import { AppContext } from "./context/AppContext";
 
 function App() {
-  const [user, setUser] = useState({ role: "admin" }); // Example: could be "logistics" or "commander"
-
+  const { user } = useContext(AppContext);
   return (
     <div>
       <Navbar user={user} />

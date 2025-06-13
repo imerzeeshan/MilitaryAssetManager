@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { useEffect } from "react";
 
 const Purchases = () => {
+  const { navigate, token } = useContext(AppContext);
   const [formData, setFormData] = useState({
     assetType: "",
     model: "",
@@ -54,6 +58,12 @@ const Purchases = () => {
       (!filters.base ||
         r.base.toLowerCase().includes(filters.base.toLowerCase()))
   );
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <div className="p-6 space-y-8">

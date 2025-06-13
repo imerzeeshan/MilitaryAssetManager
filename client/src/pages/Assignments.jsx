@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { useEffect } from "react";
 
 const Assignments = () => {
+  const { navigate, token } = useContext(AppContext);
   const [assignmentForm, setAssignmentForm] = useState({
     assetType: "",
     assetId: "",
@@ -65,6 +69,12 @@ const Assignments = () => {
       personnel: "",
     });
   };
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <div className="p-6 space-y-10">

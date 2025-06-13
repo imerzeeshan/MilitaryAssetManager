@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { useEffect } from "react";
 
 const Expenditures = () => {
+  const { navigate, token } = useContext(AppContext);
   const [form, setForm] = useState({
     equipmentType: "",
     quantity: "",
@@ -28,6 +32,11 @@ const Expenditures = () => {
       personnel: "",
     });
   };
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto mt-8">

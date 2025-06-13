@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { AppContext } from "../context/AppContext";
 
 const Login = () => {
-  const { setUser, navigate, backendUrl } = useContext(AppContext);
+  const { setUser, navigate, backendUrl, setLoggedIn } = useContext(AppContext);
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) =>
@@ -17,12 +17,13 @@ const Login = () => {
     axios.defaults.withCredentials = true;
 
     const { data } = await axios.post(backendUrl + "/api/v1/users/login", form);
-    console.log(data.data.accessToken);
+    console.log(data.data.user);
     if (data.success) {
       toast.success(data.message);
       Cookies.set("baseToken", data.data.accessToken, { expires: 1 });
+      setUser(data.data.user);
+      setLoggedIn(true);
       navigate("/");
-      setUser(true);
     }
   };
 
@@ -31,7 +32,7 @@ const Login = () => {
     if (token) {
       navigate("/");
     }
-  },[]);
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

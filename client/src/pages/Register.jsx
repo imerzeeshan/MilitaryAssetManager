@@ -1,24 +1,37 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Register = () => {
+  const { navigate, backendUrl } = useContext(AppContext);
   const [form, setForm] = useState({
-    name: "",
+    fullName: "",
+    username: "",
     email: "",
     password: "",
     role: "logistics",
   });
 
-  const navigate = useNavigate();
-
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.email && form.password && form.name) {
-      localStorage.setItem("user", JSON.stringify(form));
-      navigate("/");
+
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/v1/users/register",
+        form
+      );
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/login");
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -31,11 +44,22 @@ const Register = () => {
         <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
 
         <div className="mb-4">
+          <label className="block mb-1 font-medium">Username</label>
+          <input
+            type="text"
+            name="username"
+            value={form.username}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        <div className="mb-4">
           <label className="block mb-1 font-medium">Full Name</label>
           <input
             type="text"
-            name="name"
-            value={form.name}
+            name="fullName"
+            value={form.fullName}
             onChange={handleChange}
             required
             className="w-full p-2 border rounded"
